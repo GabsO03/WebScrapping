@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.active {
+    color: #2563eb;
+    border-color: #2563eb;
+    border-bottom-width: 2px;
+}
+
+.active svg {
+    color: #2563eb;
+}
+
+.current {
+    display: block;
+}

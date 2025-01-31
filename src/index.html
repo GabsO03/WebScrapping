@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proyecto con Tailwind y jQuery</title>
+    <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"  rel="stylesheet" />
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body class="dark text-center bg-[url('/fondo.jpg')] bg-gray-700 bg-blend-multiply bg-center" style="height: 100vh;">
     <header>
@@ -45,29 +45,8 @@
             </div>
         </nav>
     </header>
-    <section id="buscador" class="">
-        <div class="px-4 mx-auto max-w-screen-xl text-center py-20 lg:py-50">
-            <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-slate-100 md:text-5xl lg:text-6xl">Compara precios</h1>
-            <p class="mb-8 text-lg font-normal text-gray-300 lg:text-xl sm:px-16 lg:px-48">Pega el url de tu producto y consigue los mejores precios.</p>
-            <div class="max-w-xl mx-auto">   
-                <label for="url_producto" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Buscar</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                        </svg>
-                    </div>
-                    <input type="search" id="url_producto" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Ropa, electrodomésticos, juguetes ..."
-                    value="https://www.amazon.es/Sony-Auriculares-Inal%C3%A1mbricos-Bluetooth-Autonom%C3%ADa/dp/B0BTJ8ZXG5/?_encoding=UTF8&pd_rd_w=y4Bqe&content-id=amzn1.sym.4328a7b8-5f03-4da0-ad54-70d51fdff191&pf_rd_p=4328a7b8-5f03-4da0-ad54-70d51fdff191&pf_rd_r=FD8R0FNW0MPDCK1ATZRK&pd_rd_wg=dX3HV&pd_rd_r=6f8f64eb-c40b-4bc1-8be7-966ee43b8660&ref_=pd_hp_d_btf_vday_her&th=1"
-                    required />
-                    <button id="enviar" type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Buscar</button>
-                </div>
-            </div> 
-        </div>
-    </section>
 
-    <section id="info" class="hidden pt-8 lg:pb-8 md:pb-0 flex flex-wrap justify-around">
-    </section>
+    <section id="main"></section>    
 
     <script type="module" src="./index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
