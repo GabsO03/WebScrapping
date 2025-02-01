@@ -60,7 +60,8 @@ async function initialSearch(url_producto) {
         precio: precio,
         img: img,
         detalles: detalles,
-        disponibilidad: disponibilidad
+        disponibilidad: disponibilidad,
+        url_producto: url_producto
     }
     
     console.log(producto);
