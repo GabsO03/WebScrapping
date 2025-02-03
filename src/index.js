@@ -1,3 +1,7 @@
+/**
+ * @fileoverview Script principal para manejar la búsqueda y visualización de productos
+ */
+
 import { showResults, productCard, productDetails, muestraAnalisis } from './templates/results.js';
 import { navbar, menu, buscador, loading } from './templates/pages.js';
 
@@ -5,6 +9,10 @@ import { navbar, menu, buscador, loading } from './templates/pages.js';
 
 
 let historial;
+
+/**
+ * Función para recuperar el historial y manejar lo que se muestra al inicio
+ */
 async function inicio() {
   //Recuperamos el historial
   $('body').prepend(navbar('index'));
@@ -52,7 +60,10 @@ async function inicio() {
 inicio();
 
 
-
+/**
+ * Función para buscar el producto y los productos para comparar
+ * @param {string} url_producto 
+ */
 async function buscar(url_producto) {
   const urlCodificada = encodeURIComponent(url_producto);
 
@@ -89,6 +100,12 @@ async function buscar(url_producto) {
 
 }
 
+
+/**
+ * Muestra el producto y las comparaciones en el main
+ * @param {Object} producto 
+ * @param {Object} productos 
+ */
 async function pintar(producto, productos) {
 
   //Contruyo la página que me mostrará los resultados
@@ -127,6 +144,7 @@ async function pintar(producto, productos) {
       $(`#${nombre}`).addClass('current')
   });
 
+  //Para buscar un nuevo producto
   $('#new').on('click', () => {
     localStorage.removeItem('productoActual');
     localStorage.removeItem('productosActuales');

@@ -1,4 +1,8 @@
-//TODO: reemplazar los elementos para que muestre los respectivos secciones
+/**
+ * Crea y muestra una tabla con los resultados de productos encontrados
+ * @param {Array<Object>} productosArray Lista de productos a mostrar
+ * @returns {JQuery<HTMLElement>} Elemento JQuery que contiene la tabla de productos
+ */
 export const showResults = (productosArray) => {
 
     const results = $(`<div id="pResults" class="seccion relative max-w-screen-sm h-130 overflow-x-auto shadow-md  lg:rounded-b-lg current"></div>`)
@@ -46,11 +50,15 @@ export const showResults = (productosArray) => {
     return results;
 }
 
-
+/**
+ * Crea un elemento que muestra los detalles de un producto
+ * @param {string} name Nombre del producto
+ * @param {Array<string>} detailsArray Lista de detalles del producto
+ * @returns {JQuery<HTMLElement>} Div hecho con JQuery con los detalles del producto
+ */
 export const productDetails = (name, detailsArray) => {
-    const texto = detailsArray.map(detail => `<p class="text-gray-500 dark:text-gray-400">
-        ${detail}
-    </p>`);
+    const texto = detailsArray.map(detail => `<p class="text-gray-500 dark:text-gray-400">${detail}</p>`);
+
     const details = $(`<div id="pDetails" class="seccion w-full overflow-x-hidden overflow-y-auto max-w-screen-sm hidden">
     <div class="relative w-full max-w-7xl">
         <div class="relative bg-white h-130 lg:rounded-b-lg shadow-sm dark:bg-gray-700">
@@ -70,7 +78,12 @@ export const productDetails = (name, detailsArray) => {
     return details;
 }
 
-
+/**
+ * Muestra un análisis comparativo entre el producto actual y otros productos similares
+ * @param {Object} producto Producto actual para comparar
+ * @param {Array<Object>} productos Lista de productos a comparar con el producto actual
+ * @returns {JQuery<HTMLElement>} Un div con el análisis comparativo, mostrando el producto más barato, más caro y el precio medio
+ */
 export const muestraAnalisis = (producto, productos) => {
 
     const analisisGeneral = $(`<div id="pAnalisis" class="seccion bg-gray-200 dark:bg-gray-900 p-8 w-full h-130 overflow-x-hidden overflow-y-scroll max-w-screen-sm  lg:rounded-b-lg hidden"></div>`);
@@ -165,7 +178,16 @@ export const muestraAnalisis = (producto, productos) => {
     return analisisGeneral;
 }
 
-
+/**
+ * Crea una tarjeta de producto con imagen, nombre, precio y rating
+ * @param {string} img URL de la imagen del producto
+ * @param {string} name Nombre del producto
+ * @param {string} url URL a la página del producto
+ * @param {string} disponibility Estado de disponibilidad del producto
+ * @param {string} price Precio del producto en texto
+ * @param {float} rating Rating del producto como decimal de 1 al 5
+ * @returns {JQuery<HTMLElement>} Un div generado con JQuery que contiene la tarjeta del producto
+ */
 export const productCard = (img, name, url, disponibility, price, rating) => {
     const card = $(`<div id="productCard" class="w-full max-w-lg lg:mb-0 md:mb-5 sm:mb-5 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
             <a href="#">
@@ -193,7 +215,11 @@ export const productCard = (img, name, url, disponibility, price, rating) => {
 
 
 
-
+/**
+ * Crea un texto simulando las estrellas que representan el rating de un producto
+ * @param {float} rating Rating del producto en forma de número entero o decimal
+ * @returns {string} Un HTML de las estrellas para pintar directamente
+ */
 const estrellas = (rating) => {
     const ratingEntero = parseInt(rating);
 
@@ -218,7 +244,12 @@ const estrellas = (rating) => {
     return estrellitas;
 }
 
-
+/**
+ * Realiza un análisis de precio entre el producto actual y otros productos similares y calcula el más barato, más caro, la diferencia con el precio del producto actual, y el precio medio
+ * @param {Object} producto Producto actual para realizar el análisis de precio
+ * @param {Array<Object>} productos Lista de productos a comparar con el producto actual
+ * @returns {Object} Un objeto que contiene los datos mencionados
+ */
 const analisis = (producto, productos) => {
     const precio = parseFloat(producto.precio.substring(0, producto.precio.indexOf('€')));
     let masBarato = productos[0];

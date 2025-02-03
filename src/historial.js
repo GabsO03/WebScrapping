@@ -1,9 +1,18 @@
+/**
+ * @fileoverview Manejo del historial de productos en la aplicación.
+ */
+
 import { navbar } from './templates/pages.js';
+
 let historial;
 const $main = $('#main');
 
+
+/**
+ *  Función para recuperar el historial y manejar lo que se muestra al inicio
+ */
 function inicio() {
-  //Recuperamos el historial
+  //Recuperamos el historial del localStorage
   $('body').prepend(navbar('historial'));
   historial = localStorage.getItem('historial') ? new Map(JSON.parse(localStorage.getItem('historial'))) : new Map();
 }
@@ -12,6 +21,9 @@ inicio();
 
 const marco = $(`<div class="flex flex-wrap justify-start md:justify-between"></div>`);
 
+/**
+ * Genera el HTML para cada producto en el historial
+ */
 const productos = Array.from(historial).reverse().map(([id, producto]) => {
   const nombreCorto = producto.nombre.indexOf(',') > 0 ? producto.nombre.substring(0, producto.nombre.indexOf(',')) : producto.nombre
 
@@ -38,6 +50,9 @@ const productos = Array.from(historial).reverse().map(([id, producto]) => {
 marco.html(productos);
 $main.append(marco);
 
+/**
+ * Evento para volver a buscar un producto guardado en el historial
+ */
 $('.buscarDeNuevo').on('click', function () {
   const url = $(this).attr('product_url');
   localStorage.setItem('urlAntigua', url);
@@ -45,6 +60,9 @@ $('.buscarDeNuevo').on('click', function () {
   location.href = '/src/index.html';
 })
 
+/**
+ * Evento para eliminar un producto del historial
+ */
 $('.eliminar').on('click', function () {
   const id = $(this).attr('product_id');
   historial.delete(id);

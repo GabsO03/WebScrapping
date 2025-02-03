@@ -1,3 +1,7 @@
+/**
+ * Crea un menú de navegación con botones para los resultados de la busqueda
+ * @returns {JQuery<HTMLElement>} Un div con el mini menu generado
+ */
 export const menu = () => {
     const menu = $(`
         <div id="menu" class="border-b border-gray-200 dark:border-gray-700">
@@ -33,6 +37,12 @@ export const menu = () => {
     return menu;
 }
 
+
+/**
+ * Crea un formulario de búsqueda donde el usuario puede pegar una URL de un producto
+ * @param {string} [urlAntigua=''] URL ingresado para rellenar el input
+ * @returns {JQuery<HTMLElement>} El formulario con el input relleno
+ */
 export const buscador = (urlAntigua = '') => {
     const buscador = $(`<div id="buscador" class="px-4 mx-auto max-w-screen-xl text-center py-20 lg:py-50">
             <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-slate-100 md:text-5xl lg:text-6xl">Compara precios</h1>
@@ -56,6 +66,12 @@ export const buscador = (urlAntigua = '') => {
     return buscador;
 }
 
+
+/**
+ * Crea un navbar con enlaces a las páginas de inicio y productos, destacando la página activa
+ * @param {string} page Página activa que se debe resaltar en el navbar
+ * @returns {JQuery<HTMLElement>} El navbar generado
+ */
 export const navbar = (page) => {
     return $(`<header>
         <nav class="bg-white border-gray-200 dark:bg-gray-900">
@@ -79,6 +95,11 @@ export const navbar = (page) => {
     </header>`)
 }
 
+
+/**
+ * Animación con un SVG para avisar que el porducto se está buscando
+ * @returns {JQuery<HTMLElement>} El elemento de carga generado.
+ */
 export const loading = $(`<!-- Cargando -->
             <div class="text-center flex justify-center" id="loading">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="200" height="200">

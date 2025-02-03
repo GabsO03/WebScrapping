@@ -1,3 +1,7 @@
+/**
+ * @fileoverview Servidor Express con Puppeteer para web scraping
+ */
+
 const puppeteer = require('puppeteer');
 const { v4: uuid } = require('uuid');
 
@@ -6,7 +10,7 @@ const app = express();
 const cors = require('cors');
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+app.use(cors()); //Esto es para que no nos afecte el cors
 app.use(express.json());
 
 app.listen(PORT, () => {
@@ -15,12 +19,15 @@ app.listen(PORT, () => {
 app.get('/', (req, res) => {
     res.send(`<h2>Hola desde ${req.baseUrl}</h2>`);
 });
+
+//Api para la primera busqueda (producto principal)
 app.get('/api/:url', async (request, response) => {
     const url = decodeURIComponent(request.params.url);
     const data = await initialSearch(url);
     response.json(data)
 })
 
+//Api para la segunda busqueda (productos a comparar)
 app.get('/api/compare/:nombre', async (request, response) => {
     const nombre = request.params.nombre;
     const data = await secondarySearch(nombre);
@@ -29,6 +36,11 @@ app.get('/api/compare/:nombre', async (request, response) => {
 
 
 // Primera busqueda
+/**
+ * Funcion para la primera busqueda del producto
+ * @param {string} url_producto 
+ * @returns {Promise<Object>} Un objeto con datos del producto
+ */
 async function initialSearch(url_producto) {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
@@ -73,7 +85,12 @@ async function initialSearch(url_producto) {
 }
 
 
-// Seguna busqueda
+// Segunda busqueda
+/**
+ * Realiza una búsqueda secundaria en AliExpress.
+ * @param {string} nombre_producto Nombre del producto
+ * @returns {Promise<Object[]>} Lista de productos para comparar
+ */
 async function secondarySearch(nombre_producto) {
     const browser = await puppeteer.launch();
     let nombreLimpio = nombre_producto.substring(0, nombre_producto.indexOf(','));
