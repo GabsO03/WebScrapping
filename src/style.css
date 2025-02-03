@@ -15,3 +15,9 @@
 .current {
     display: block;
 }
+
+.activeNavbar {
+    color: white;
+    background-color: #1d4ed8; /* Azul */
+    border-radius: 4px;
+}
