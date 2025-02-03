@@ -33,7 +33,7 @@ export const menu = () => {
     return menu;
 }
 
-export const buscador = () => {
+export const buscador = (urlAntigua = '') => {
     const buscador = $(`<div id="buscador" class="px-4 mx-auto max-w-screen-xl text-center py-20 lg:py-50">
             <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-slate-100 md:text-5xl lg:text-6xl">Compara precios</h1>
             <p class="mb-8 text-lg font-normal text-gray-300 lg:text-xl sm:px-16 lg:px-48">Pega el url de tu producto y consigue los mejores precios.</p>
@@ -46,16 +46,12 @@ export const buscador = () => {
                         </svg>
                     </div>
                     <input type="search" id="url_producto" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Ropa, electrodomésticos, juguetes ..."
-                    value="https://www.amazon.es/Sony-Auriculares-Inal%C3%A1mbricos-Bluetooth-Autonom%C3%ADa/dp/B0BTJ8ZXG5/?_encoding=UTF8&pd_rd_w=y4Bqe&content-id=amzn1.sym.4328a7b8-5f03-4da0-ad54-70d51fdff191&pf_rd_p=4328a7b8-5f03-4da0-ad54-70d51fdff191&pf_rd_r=FD8R0FNW0MPDCK1ATZRK&pd_rd_wg=dX3HV&pd_rd_r=6f8f64eb-c40b-4bc1-8be7-966ee43b8660&ref_=pd_hp_d_btf_vday_her&th=1"
+                    ${urlAntigua? `value="${urlAntigua}"` : ''}
                     required />
                     <button id="enviar" type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Buscar</button>
                 </div>
             </div>
             <p id="error" class="text-red-400 text-pretty mt-5 font-semibold"></p>
-
-            <!-- Cargando -->
-            <div class="text-center flex justify-center" id="loading">
-            </div>
         </div>`)
     return buscador;
 }
@@ -68,19 +64,13 @@ export const navbar = (page) => {
                 <img src="/logo.png" class="h-8" alt="Logo" />
                 <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Compara</span>
             </a>
-            <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
-                <span class="sr-only">Open main menu</span>
-                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
-                </svg>
-            </button>
-            <div class="hidden w-full md:block md:w-auto" id="navbar-default">
-                <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+            <div class="lg:w-1/5 md:w-1/3 sm:w-1/3">
+                <ul class="font-medium flex p-4 md:p-0 mt-4 rounded-lg w-full justify-between rtl:space-x-reverse md:mt-0">
                     <li>
-                        <a href="/src/index.html" class="navbarBtn block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent ${page == 'index'? '.activeNavbar' : ''}">Inicio</a>
+                        <a href="/src/index.html" class="navbarBtn block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white ${page == 'index'? 'activeNavbar' : ''}">Inicio</a>
                     </li>
                     <li>
-                        <a href="/src/historial.html" class="navbarBtn block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent ${page == 'historial'? '.activeNavbar' : ''}">Productos</a>
+                        <a href="/src/historial.html" class="navbarBtn block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white ${page == 'historial'? 'activeNavbar' : ''}">Productos</a>
                     </li>
                 </ul>
             </div>
@@ -89,4 +79,23 @@ export const navbar = (page) => {
     </header>`)
 }
 
-//TODO esto agregar la page
+export const loading = $(`<!-- Cargando -->
+            <div class="text-center flex justify-center" id="loading">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="200" height="200">
+                    <circle fill="#FFF" stroke="#FFF" stroke-width="2" r="7" cx="17" cy="50">
+                        <animate attributeName="cx" calcMode="spline" dur="2s" values="17;83;83;17;17" keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1" repeatCount="indefinite" begin="0"></animate>
+                    </circle>
+                    <circle fill="#FFF" stroke="#FFF" stroke-width="2" opacity=".8" r="7" cx="17" cy="50">
+                        <animate attributeName="cx" calcMode="spline" dur="2s" values="17;83;83;17;17" keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1" repeatCount="indefinite" begin="0.05"></animate>
+                    </circle>
+                    <circle fill="#FFF" stroke="#FFF" stroke-width="2" opacity=".6" r="7" cx="17" cy="50">
+                        <animate attributeName="cx" calcMode="spline" dur="2s" values="17;83;83;17;17" keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1" repeatCount="indefinite" begin=".1"></animate>
+                    </circle>
+                    <circle fill="#FFF" stroke="#FFF" stroke-width="2" opacity=".4" r="7" cx="17" cy="50">
+                        <animate attributeName="cx" calcMode="spline" dur="2s" values="17;83;83;17;17" keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1" repeatCount="indefinite" begin=".15"></animate>
+                    </circle>
+                    <circle fill="#FFF" stroke="#FFF" stroke-width="2" opacity=".2" r="7" cx="17" cy="50">
+                        <animate attributeName="cx" calcMode="spline" dur="2s" values="17;83;83;17;17" keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1" repeatCount="indefinite" begin=".2"></animate>
+                    </circle>
+                </svg>
+            </div>`);

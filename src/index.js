@@ -1,53 +1,51 @@
-import { showResults, productCard, productDetails, muestraAnalisis } from '/templates/results.js';
-import { navbar, menu, buscador } from '/templates/pages.js';
+import { showResults, productCard, productDetails, muestraAnalisis } from './templates/results.js';
+import { navbar, menu, buscador, loading } from './templates/pages.js';
+
+// localStorage.clear();
+
 
 let historial;
 async function inicio() {
   //Recuperamos el historial
   $('body').prepend(navbar('index'));
-  historial = localStorage.getItem('historial') ? JSON.parse(localStorage.getItem('historial')) : new Set();
-// localStorage.clear();
-  if (localStorage.getItem('productoActual')) {
-    //Si ya tenemos un producto, no es necesario hacer la busqueda nuevamente y solo pintamos
-    const producto = JSON.parse(localStorage.getItem('productoActual'));
-    const productos = JSON.parse(localStorage.getItem('productosActuales'));
+  historial = localStorage.getItem('historial') ? new Map(JSON.parse(localStorage.getItem('historial'))) : new Map();
 
-    await pintar(producto, productos);
-    console.log('si hay');
+  if (localStorage.getItem('urlAntigua')) {
+    
+    const url = localStorage.getItem('urlAntigua');
+    $('#main').html(buscador(url));
+    $('#main').append(loading);
+    await buscar(url);
+    localStorage.removeItem('urlAntigua');
 
   } else {
-    $('#main').html(buscador);
 
-    $("#enviar").on('click', async () => {
-      const url_producto = $('#url_producto').val();
-      if(url_producto) {
-        $('#error').text();
-        $('#loading').html(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="200" height="200">
-                      <circle fill="#FFF" stroke="#FFF" stroke-width="2" r="7" cx="17" cy="50">
-                        <animate attributeName="cx" calcMode="spline" dur="2s" values="17;83;83;17;17" keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1" repeatCount="indefinite" begin="0"></animate>
-                      </circle>
-                      <circle fill="#FFF" stroke="#FFF" stroke-width="2" opacity=".8" r="7" cx="17" cy="50">
-                        <animate attributeName="cx" calcMode="spline" dur="2s" values="17;83;83;17;17" keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1" repeatCount="indefinite" begin="0.05"></animate>
-                      </circle>
-                      <circle fill="#FFF" stroke="#FFF" stroke-width="2" opacity=".6" r="7" cx="17" cy="50">
-                        <animate attributeName="cx" calcMode="spline" dur="2s" values="17;83;83;17;17" keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1" repeatCount="indefinite" begin=".1"></animate>
-                      </circle>
-                      <circle fill="#FFF" stroke="#FFF" stroke-width="2" opacity=".4" r="7" cx="17" cy="50">
-                        <animate attributeName="cx" calcMode="spline" dur="2s" values="17;83;83;17;17" keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1" repeatCount="indefinite" begin=".15"></animate>
-                      </circle>
-                      <circle fill="#FFF" stroke="#FFF" stroke-width="2" opacity=".2" r="7" cx="17" cy="50">
-                        <animate attributeName="cx" calcMode="spline" dur="2s" values="17;83;83;17;17" keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1" repeatCount="indefinite" begin=".2"></animate>
-                      </circle>
-        </svg>`)
-
-        const urlCodificada = encodeURIComponent(url_producto);
-        await buscar(urlCodificada);
-      }
-      else {
-        $('#error').text('Introduce una url');
-      }
-    });
+    if (localStorage.getItem('productoActual')) {
+      //Si ya tenemos un producto, no es necesario hacer la busqueda nuevamente y solo pintamos
+      const producto = JSON.parse(localStorage.getItem('productoActual'));
+      const productos = JSON.parse(localStorage.getItem('productosActuales'));
+  
+      await pintar(producto, productos);
+  
+    } else {
+      $('#main').html(buscador);
+  
+      $("#enviar").on('click', async () => {
+        const url_producto = $('#url_producto').val();
+        if(url_producto) {
+          $('#error').text();
+          
+          $('#main').append(loading);
+  
+          await buscar(url_producto, historial);
+        }
+        else {
+          $('#error').text('Introduce una url');
+        }
+      });
+    }
   }
+
 
 }
 
@@ -56,8 +54,9 @@ inicio();
 
 
 async function buscar(url_producto) {
+  const urlCodificada = encodeURIComponent(url_producto);
 
-  fetch(`http://localhost:3000/api/${url_producto}`)
+  fetch(`http://localhost:3000/api/${urlCodificada}`)
     .then(response => response.json())
     .then(async (producto) => {
       await fetch(`http://localhost:3000/api/compare/${producto.nombre}`)
@@ -66,9 +65,19 @@ async function buscar(url_producto) {
         await pintar(producto, productos);
         
         //Guardamos en el historial
-        historial.add(producto);
+        
+        Array.from(historial).forEach(([id, producto_]) => {
+          if (producto_.nombre === producto.nombre) {
+            historial.delete(producto_.id);
+          }
+          console.log(producto_.nombre + ' -.-.- ' + producto.nombre);
+        }); //Si existe el producto, solo lo quita y lo pone de nuevo
+
+        historial.set(producto.id, producto);
+
         localStorage.setItem('productoActual', JSON.stringify(producto));
         localStorage.setItem('productosActuales', JSON.stringify(productos));
+        localStorage.setItem('historial', JSON.stringify(Array.from(historial)))
       })
     })
     .catch(error => {
@@ -121,6 +130,5 @@ async function pintar(producto, productos) {
   $('#new').on('click', () => {
     localStorage.removeItem('productoActual');
     localStorage.removeItem('productosActuales');
-    localStorage.setItem('historial', JSON.stringify(historial))
   })
 }

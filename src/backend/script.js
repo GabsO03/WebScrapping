@@ -1,9 +1,9 @@
 const puppeteer = require('puppeteer');
+const { v4: uuid } = require('uuid');
 
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const { request } = require('http');
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
@@ -56,6 +56,7 @@ async function initialSearch(url_producto) {
     const rating = await page.$eval('#acrPopover span.a-size-base', span => span? span.textContent.trim() : false)
     
     const producto = {
+        id: uuid(),
         nombre: nombre,
         precio: precio,
         img: img,
@@ -74,18 +75,19 @@ async function initialSearch(url_producto) {
 
 // Seguna busqueda
 async function secondarySearch(nombre_producto) {
-    let browser1;
+    const browser = await puppeteer.launch();
     let nombreLimpio = nombre_producto.substring(0, nombre_producto.indexOf(','));
 
     let productos = [];
 
     //Buscando en aliexpress
     try {
-        browser1 = await puppeteer.launch();
-        const page = await browser1.newPage();
+        const page = await browser.newPage();
 
         nombreLimpio = nombreLimpio.replaceAll(' ', '-');
         await page.goto(`https://es.aliexpress.com/w/wholesale-${nombreLimpio}.html?spm=a2g0o.productlist.search.0`, { waitUntil: 'domcontentloaded', timeout: 100000 })
+
+        console.log(`https://es.aliexpress.com/w/wholesale-${nombreLimpio}.html?spm=a2g0o.productlist.search.0`);
 
         const aliexpress = await page.$$eval('#card-list .search-item-card-wrapper-gallery', items => {
             return items.map(item => {
@@ -102,7 +104,8 @@ async function secondarySearch(nombre_producto) {
                 
                     return rating / 10; 
                 }
-                const url = item.querySelector('.multi--container--1UZxxHY .cards--card--3PJxwBm .search-card-item') ? item.querySelector('.multi--container--1UZxxHY .cards--card--3PJxwBm .search-card-item').href.trim() : '';
+                const aHref = item.querySelector('.search-card-item');
+                const url = aHref ? `https:${aHref.getAttribute('href').trim()}` : '';
                 
                 return {
                     nombre: nombre,
@@ -118,45 +121,10 @@ async function secondarySearch(nombre_producto) {
     } catch (error) {
         console.error('No se encontraron resultados en aliexpress')
     } finally {
-        await browser1.close();
+        await browser.close();
     }
 
     console.dir(productos);
 
     return productos;
 }
-
-
-    // //Buscando en Wallapop
-    // try {
-    //     browser2 = await puppeteer.launch();
-    //     const page = await browser2.newPage();
-
-    //     nombreLimpio = nombreLimpio.replaceAll('-', '%20');
-
-    //     await page.goto(`https://es.wallapop.com/app/search?filters_source=recent_searches&keywords=${nombreLimpio}`, { waitUntil: 'domcontentloaded', timeout: 100000 })
-    //     console.log(`https://es.wallapop.com/app/search?filters_source=recent_searches&keywords=${nombreLimpio}`);
-
-    //     const wallapop = await page.$$eval('.ItemCardList', items => {
-    //         return items.map(item => {
-    //             console.log('buscando afddfs');
-    //             const nombre = item.querySelector('ItemCard__title') ? item.querySelector('ItemCard__title').textContent.trim() : 'No disponible';
-    //             const precio = item.querySelector('.ItemCard__price') ? item.querySelector('.ItemCard__price').textContent.trim() : null;
-    //             const img = item.querySelector('.ItemCard__image img') ? item.querySelector('.ItemCard__image img').src : null;
-
-    //             return {
-    //                 nombre: nombre,
-    //                 precio: precio,
-    //                 img: img,
-    //                 rating: 'No disponible'
-    //             }
-    //         }).slice(0, 5)
-    //     });
-    //     console.log('Buscando en wallapop');
-    //     productos = productos.concat(wallapop);
-    //     console.dir(productos);
-    // } catch (error) {
-    //     console.error('No se encontraron resultados en wallapop')
-    // } finally {
-    //     await browser2.close();
-    // }

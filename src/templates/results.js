@@ -10,7 +10,7 @@ export const showResults = (productosArray) => {
                         <img src="${producto.img}" class="w-16 md:w-32 max-w-full max-h-full" alt="Apple Watch">
                     </td>
                     <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                        ${producto.nombre}
+                        <a href="${producto.url}">${producto.nombre}</a>
                     </td>
                     <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
                         ${producto.precio}
@@ -100,7 +100,7 @@ export const muestraAnalisis = (producto, productos) => {
                         <img src="${producto.img}" class="w-16 md:w-32 rounded-lg" alt="Producto Principal">
                     </td>
                     <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                        <p>${producto.nombre.substring(0, producto.nombre.indexOf(','))}</p>
+                        <p><a href="${producto.url}">${producto.nombre.substring(0, producto.nombre.indexOf(','))}</a></p>
                         <span class="text-sm text-gray-500 dark:text-gray-400">Producto actual</span>
                     </td>
                     <td class="px-6 py-4 font-bold text-gray-900 dark:text-white text-center">${producto.precio}</td>
