@@ -27,22 +27,23 @@ const marco = $(`<div class="flex flex-wrap justify-start md:justify-between"></
 const productos = Array.from(historial).reverse().map(([id, producto]) => {
   const nombreCorto = producto.nombre.indexOf(',') > 0 ? producto.nombre.substring(0, producto.nombre.indexOf(',')) : producto.nombre
 
-  return `<div id="${id}" class="h-full max-w-xs mb-5 mx-1 bg-[#ffc8dd] border border-[#bde0fe] rounded-lg shadow-sm dark:bg-[#8338ec] dark:border-[#00b4d8]">
+  return `<div id="${id}" class="h-full max-w-xs mb-5 mx-1 border rounded-lg shadow-sm bg-[#461d7e] border-[#00b4d8]">
               <a href="${producto.url_producto}" class="flex justify-center">
                   <img class="w-2/3 m-2.5 rounded-lg" src="${producto.img}" alt="product image">
               </a>
               <div class="px-8 pb-5 flex justify-between">
                   <a href="${producto.url_producto}">
-                      <h5 id="productoNombre" class="text-lg font-semibold tracking-tight text-left text-[#00b4d8] dark:text-white">${nombreCorto}</h5>
+                      <h5 id="productoNombre" class="text-lg font-semibold tracking-tight text-left text-white">${nombreCorto}</h5>
                   </a>
                   <div class="flex flex-col justify-between items-center">
-                      <span id="productPrice" class="text-md font-bold text-[#00b4d8] dark:text-[#ffafcc] px-1">${producto.precio}</span>
-                      <span id="productDisponibility" class="bg-[#ffafcc] text-[#00b4d8] text-xs font-semibold px-2.5 py-0.5 rounded-full dark:bg-[#a2d2ff] dark:text-[#fb8500]">${producto.disponibilidad}</span>
+                      <span id="productPrice" class="text-md font-bold text-[#ffafcc] px-1">${producto.precio}</span>
+                      <span id="productDisponibility" class=" text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#93bde4] text-[#613a0e]">${producto.disponibilidad}</span>
                   </div>
               </div>
               <div class="flex items-center justify-around mb-1.5">
-                  <button product_url="${producto.url_producto}" type="button" class="buscarDeNuevo text-white bg-[#fb8500] hover:bg-[#ffafcc] focus:outline-none focus:ring-4 focus:ring-[#ffafcc] font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-[#ffd703] dark:hover:bg-[#fb6f92] dark:focus:ring-[#00b4d8]">Buscar de nuevo</button>
-                  <button product_id="${id}" class="eliminar text-white bg-[#ff6f92] hover:bg-[#fb8500] focus:outline-none focus:ring-4 focus:ring-[#fb6f92] font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-[#fb8500] dark:hover:bg-[#ffafcc] dark:focus:ring-[#8338ec]">Eliminar</button>
+                  <button product_url="${producto.url_producto}" type="button" class="buscarDeNuevo text-white focus:outline-none focus:ring-4 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 bg-orange-500 hover:bg-[#ffd703] focus:ring-[#00b4d8]">Buscar de nuevo</button>
+
+                  <button product_id="${id}" class="eliminar text-white focus:outline-none focus:ring-4 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 bg-red-600  hover:bg-[#ffafcc] focus:ring-[#8338ec]">Eliminar</button>
               </div>
           </div>`;
 });

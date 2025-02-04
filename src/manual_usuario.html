@@ -10,54 +10,80 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </head>
     <body class="dark bg-[url('/fondo.jpg')] bg-gray-700 bg-blend-multiply bg-center" style="height: 100vh;">
-    <div class="mx-auto p-8 bg-[#91764331] shadow-lg">
-        <h1 class="text-3xl font-bold text-center text-[#8338ec]">Manual de Usuario</h1>
-        <p class="text-lg text-center mt-2">Guía completa para el uso del sistema</p>
-         
-        <section class="mt-6">
-            <h2 class="text-2xl font-semibold text-[#fb6f92]">1. Introducción</h2>
-            <p>Este manual tiene como objetivo ayudar a los usuarios a entender y utilizar el sistema de manera efectiva.</p>
-        </section>
+        
+    <section class="dark:bg-gray-900">
+        <div class="px-4 mx-auto max-w-screen-xl text-center pt-24 pb-12 lg:pb-36">
+            <h1 class="mb-4 text-center text-4xl font-extrabold tracking-tight leading-none text-[#8338ec] md:text-5xl lg:text-6xl">Manual de Usuario</h1>
+            <p class="text-lg text-center mt-2 text-white">Guía completa para el uso del sistema</p>
+        </div>
+        
+        <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16">
+            <div class="bg-[#291f84] border border-gray-200 dark:border-gray-700 rounded-lg p-8 md:p-12 mb-8">
+                <span href="#" class="bg-blue-100 text-blue-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-blue-400 mb-2">
+                    <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 14">
+                        <path d="M11 0H2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm8.585 1.189a.994.994 0 0 0-.9-.138l-2.965.983a1 1 0 0 0-.685.949v8a1 1 0 0 0 .675.946l2.965 1.02a1.013 1.013 0 0 0 1.032-.242A1 1 0 0 0 20 12V2a1 1 0 0 0-.415-.811Z"/>
+                    </svg>
+                    Tutorial
+                </span>
+                <h1 class="text-gray-900 dark:text-white text-3xl md:text-5xl font-extrabold mb-2">Instrucciones de Uso</h1>
+                <p class="text-lg font-medium text-gray-500 dark:text-gray-400">Para utilizar el sistema, sigue estos pasos:</p>
+                <ul class="py-5 pl-8 list-decimal text-white">
+                    <li>Pega el URL del producto te deseas buscar y espera</li>
+                    <li>Navega por el menú y compara los precios</li>
+                    <li>Ve a historial para ver los producto que ya buscaste</li>
+                </ul>
 
-        <section class="mt-6">
-            <h2 class="text-2xl font-semibold text-[#fb8500]">2. Requisitos Previos</h2>
-            <ul class="list-disc pl-6">
-                <li>Conexión a internet estable</li>
-                <li>Navegador web actualizado</li>
-                <li>Url valida del producto</li>
-            </ul>
-        </section>
+                <a href="/src/index.html" class="inline-flex justify-center items-center py-2.5 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-900">
+                    Empezar
+                    <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                    </svg>
+                </a>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-[#291f84] border border-gray-200 dark:border-gray-700 rounded-lg p-8 md:p-12">
+                    <span href="#" class="bg-green-100 text-green-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-green-400 mb-2">
+                        <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+                            <path d="M17 11h-2.722L8 17.278a5.512 5.512 0 0 1-.9.722H17a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1ZM6 0H1a1 1 0 0 0-1 1v13.5a3.5 3.5 0 1 0 7 0V1a1 1 0 0 0-1-1ZM3.5 15.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2ZM16.132 4.9 12.6 1.368a1 1 0 0 0-1.414 0L9 3.55v9.9l7.132-7.132a1 1 0 0 0 0-1.418Z"/>
+                        </svg>
+                        Design
+                    </span>
+                    <h2 class="text-gray-900 dark:text-white text-3xl font-extrabold mb-2">Descripción de la Interfaz</h2>
+                    <p class="text-md font-medium text-gray-500 dark:text-gray-400 mb-4">El sistema cuenta con una interfaz intuitiva con los siguientes elementos clave:</p>
+                    <ul class="list-disc pl-6 text-md text-white">
+                        <li>Menú de navegación principal</li>
+                        <li>Listado de productos</li>
+                        <li>Instrucciones</li>
+                    </ul>
+                </div>
+                <section class="mt-6 hidden">
+                    <h2 class="text-2xl font-semibold text-[#cdb4db]">5. </h2>
+                    <p></p>
+                    <ul class="list-disc pl-6">
+                        <li>Revisar tu conexión a internet.</li>
+                        <li>Actualizar la página o borrar la caché del navegador.</li>
+                        <li>Revisar que la url este bien escrita</li>
+                    </ul>
+                </section>
 
-        <section class="mt-6">
-            <h2 class="text-2xl font-semibold text-[#ffb703]">3. Descripción de la Interfaz</h2>
-            <p>El sistema cuenta con una interfaz intuitiva con los siguientes elementos clave:</p>
-            <ul class="list-disc pl-6">
-                <li>Menú de navegación principal</li>
-                <li>Listado de productos</li>
-                <li>Instrucciones</li>
-            </ul>
-        </section>
-
-        <section class="mt-6">
-            <h2 class="text-2xl font-semibold text-[#00b4d8]">4. Instrucciones de Uso</h2>
-            <p>Para utilizar el sistema, sigue estos pasos:</p>
-            <ol class="list-decimal pl-6">
-                <li>Pega el URL del producto te deseas buscar y espera</li>
-                <li>Navega por el menú y compara los precios</li>
-                <li>Ve a historial para ver los producto que ya buscaste</li>
-            </ol>
-        </section>
-
-        <section class="mt-6">
-            <h2 class="text-2xl font-semibold text-[#cdb4db]">5. Solución de Problemas</h2>
-            <p>Si encuentras problemas, prueba lo siguiente:</p>
-            <ul class="list-disc pl-6">
-                <li>Revisar tu conexión a internet.</li>
-                <li>Actualizar la página o borrar la caché del navegador.</li>
-                <li>Revisar que la url este bien escrita</li>
-            </ul>
-        </section>
-    </div>
+                <div class="bg-[#291f84] border border-gray-200 dark:border-gray-700 rounded-lg p-8 md:p-12">
+                    <span class="bg-purple-100 text-purple-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-purple-400 mb-2">
+                        <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4 1 8l4 4m10-8 4 4-4 4M11 1 9 15"/>
+                        </svg>
+                        Code
+                    </span>
+                    <h2 class="text-gray-900 dark:text-white text-3xl font-extrabold mb-2">Solución de Problemas</h2>
+                    <p class="text-lg font-medium text-gray-500 dark:text-gray-400 mb-4">Si encuentras problemas, prueba lo siguiente:</p>
+                    <ul class="list-disc pl-6 text-md text-white">
+                        <li>Revisar tu conexión a internet.</li>
+                        <li>Actualizar la página o borrar la caché del navegador.</li>
+                        <li>Revisar que la url este bien escrita</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
     <script type="module">
         import { navbar } from './templates/pages.js';
         $('body').prepend(navbar('manual'));
