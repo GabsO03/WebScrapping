@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: templates/results.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: templates/results.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Crea y muestra una tabla con los resultados de productos encontrados
+ * @param {Array&lt;Object>} productosArray Lista de productos a mostrar
+ * @returns {JQuery&lt;HTMLElement>} Elemento JQuery que contiene la tabla de productos
+ */
+export const showResults = (productosArray) => {
+
+    const results = $(`&lt;div id="pResults" class="seccion relative max-w-screen-sm h-130 overflow-x-auto shadow-md  lg:rounded-b-lg current">&lt;/div>`)
+    if (productosArray.length > 0) {
+        let productos = ``;
+        productosArray.forEach(producto => {
+            productos += `&lt;tr class="bg-[#ffc8dd] border-b dark:bg-[#8338ec] dark:border-00b4d8 border-gray-200 hover:bg-[#ffafcc] dark:hover:bg-[#fb6f92]">
+                    &lt;td class="p-4 flex justify-center">
+                        &lt;img src="${producto.img}" class="w-16 md:w-32 max-w-full max-h-full" alt="${producto.img}">
+                    &lt;/td>
+                    &lt;td class="px-6 py-4 font-semibold text-bde0fe dark:text-[#a2d2ff]">
+                        &lt;a href="${producto.url}">${producto.nombre}&lt;/a>
+                    &lt;/td>
+                    &lt;td class="px-6 py-4 font-semibold text-00b4d8 dark:text-[#ffb703]">
+                        ${producto.precio}
+                    &lt;/td>
+                &lt;/tr>`;
+        });
+        results.html(`&lt;table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        &lt;thead class="text-xs text-[#bde0fe] uppercase bg-[#ffc8dd] dark:bg-[#8338ec] dark:text-[#ffb703]">
+            &lt;tr class="text-center">
+                &lt;th scope="col" class="px-16 py-3">
+                    Imagen
+                &lt;/th>
+
+                &lt;th scope="col" class="px-6 py-3">
+                    Producto
+                &lt;/th>
+                &lt;th scope="col" class="px-6 py-3">
+                    Precio
+                &lt;/th>
+            &lt;/tr>
+        &lt;/thead>
+        &lt;tbody>
+        `+
+        productos
+        +`
+        &lt;/tbody>
+    &lt;/table>`)
+    }
+    else {
+        results.html(`&lt;p class="text-[#00b4d8] dark:text-[#a2d2ff]">No encontramos otros productos con ese nombre :(&lt;/p>`)
+    }
+    
+    
+    return results;
+}
+
+/**
+ * Crea un elemento que muestra los detalles de un producto
+ * @param {string} name Nombre del producto
+ * @param {Array&lt;string>} detailsArray Lista de detalles del producto
+ * @returns {JQuery&lt;HTMLElement>} Div hecho con JQuery con los detalles del producto
+ */
+export const productDetails = (name, detailsArray) => {
+    const texto = detailsArray.map(detail => `&lt;p class="text-gray-500 dark:text-gray-400">${detail}&lt;/p>`);
+
+    const details = $(`&lt;div id="pDetails" class="seccion w-full overflow-x-hidden overflow-y-auto max-w-screen-sm hidden">
+    &lt;div class="relative w-full max-w-7xl">
+        &lt;div class="relative bg-[#ffc8dd] h-130 lg:rounded-b-lg shadow-sm dark:bg-[#8338ec]">
+            &lt;div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-[#00b4d8] border-[#ffd703]">
+                &lt;h3 class="text-xl font-medium text-[#bde0fe] dark:text-[#a2d2ff]">
+                    ${name}
+                &lt;/h3>
+            &lt;/div>
+            &lt;!-- Modal body -->
+            &lt;div class="p-4 md:p-5">
+            ${texto}
+            &lt;/div>
+        &lt;/div>
+    &lt;/div>
+    &lt;/div>`);
+
+    return details;
+}
+
+/**
+ * Muestra un análisis comparativo entre el producto actual y otros productos similares
+ * @param {Object} producto Producto actual para comparar
+ * @param {Array&lt;Object>} productos Lista de productos a comparar con el producto actual
+ * @returns {JQuery&lt;HTMLElement>} Un div con el análisis comparativo, mostrando el producto más barato, más caro y el precio medio
+ */
+export const muestraAnalisis = (producto, productos) => {
+
+    const analisisGeneral = $(`&lt;div id="pAnalisis" class="seccion bg-[#ffc8dd] dark:bg-[#8338ec] p-8 w-full h-130 overflow-x-hidden overflow-y-scroll max-w-screen-sm  lg:rounded-b-lg hidden">&lt;/div>`);
+
+
+    if (productos.length > 0) {
+        const { masBarato, masCaro, diferenciaBarato, diferenciaCaro, media, mediaPorcentaje } = analisis(producto, productos);
+
+        const tablaComparativa = $(`&lt;div class="relative overflow-x-auto shadow-md rounded-lg">
+        &lt;table class="w-full text-sm text-left text-[#bde0fe] dark:text-[#a2d2ff]">
+            &lt;caption class="p-5 text-lg font-semibold text-left rtl:text-right text-[#00b4d8] bg-[#ffc8dd] dark:text-white dark:bg-[#461c80]">
+                Tabla comparativa
+                &lt;p class="mt-1 text-sm font-normal text-[#00b4d8] dark:text-[#a2d2ff]">Una comparación entre el producto más barato y el más caro que encontramos&lt;/p>
+            &lt;/caption>
+            &lt;thead class="text-xs text-[#00b4d8] uppercase bg-[#ffd703] dark:bg-[#00b4d8c6] dark:text-[#ffafcc]">
+                &lt;tr class="text-center">
+                    &lt;th scope="col" class="px-6 py-3">Imagen&lt;/th>
+                    &lt;th scope="col" class="px-6 py-3">Producto&lt;/th>
+                    &lt;th scope="col" class="px-6 py-3">Precio&lt;/th>
+                    &lt;th scope="col" class="py-3">Rating&lt;/th>
+                &lt;/tr>
+            &lt;/thead>
+            &lt;tbody>
+                &lt;!-- Producto -->
+                &lt;tr class="bg-gray-100 border-b dark:bg-[#a2d2ff] dark:border-[#00b4d8] hover:bg-[#ffc8dd] dark:hover:bg-[#d53b74]">
+                    &lt;td class="p-4 flex justify-center">
+                        &lt;img src="${producto.img}" class="w-16 md:w-32 rounded-lg" alt="Producto Principal">
+                    &lt;/td>
+                    &lt;td class="px-6 py-4 font-semibold text-[#bde0fe] dark:text-[#00b4d8]">
+                        &lt;p>&lt;a href="${producto.url}">${producto.nombre.substring(0, producto.nombre.indexOf(','))}&lt;/a>&lt;/p>
+                        &lt;span class="text-sm text-[#ffafcc] dark:text-[#ffd703]">Producto actual&lt;/span>
+                    &lt;/td>
+                    &lt;td class="px-6 py-4 font-bold text-[#00b4d8] dark:text-[#ffafcc] text-center">${producto.precio}&lt;/td>
+                    &lt;td class="px-2">
+                        ${estrellas(producto.rating)}
+                    &lt;/td>
+                &lt;/tr>
+    
+                &lt;!-- Más barato -->
+                &lt;tr class="bg-gray-100 border-b dark:bg-[#a2d2ff] dark:border-[#00b4d8] hover:bg-[#ffc8dd] dark:hover:bg-[#d53b74]">
+                    &lt;td class="p-4">
+                        &lt;img src="${masBarato.img}" class="w-16 md:w-32 rounded-lg" alt="Opción Económica">
+                    &lt;/td>
+                    &lt;td class="px-6 py-4 font-semibold text-[#769fc3] dark:text-[#00b4d8]">
+                        &lt;p>${masBarato.nombre.substring(0, masBarato.nombre.indexOf(','))}&lt;/p>
+                        &lt;span class="text-sm text-[#ffafcc] dark:text-[#ffd703]">Más económico&lt;/span>
+                    &lt;/td>
+                    &lt;td class="px-6 py-4 font-bold text-center text-[#00b4d8] dark:text-[#4f88bd] flex justify-center items-center flex-col">${masBarato.precio}🔽&lt;span class="text-xs text-gray-500 dark:text-gray-500">${diferenciaBarato}€ más barato&lt;/span>&lt;/td>
+                    &lt;td class="px-2">
+                        ${estrellas(masBarato.rating)}
+                    &lt;/td>
+                &lt;/tr>
+    
+                &lt;!-- Más caro -->
+                &lt;tr class="bg-gray-100 border-b dark:bg-[#a2d2ff] dark:border-[#00b4d8] hover:bg-[#ffc8dd] dark:hover:bg-[#d53b74]">
+                    &lt;td class="p-4">
+                        &lt;img src="${masCaro.img}" class="w-16 md:w-32 rounded-lg" alt="Opción Premium">
+                    &lt;/td>
+                    &lt;td class="px-6 py-4 font-semibold text-[#bde0fe] dark:text-[#00b4d8]">
+                        &lt;p>${masCaro.nombre.substring(0, masCaro.nombre.indexOf(','))}&lt;/p>
+                        &lt;span class="text-sm text-[#ffafcc] dark:text-[#ffd703]">Más costoso&lt;/span>
+                    &lt;/td>
+                    &lt;td class="px-6 py-4 font-bold text-center text-[#ff6f92] dark:text-[#ff8500] flex justify-center items-center flex-col">${masCaro.precio}🔼&lt;span class="text-xs text-gray-500 dark:text-gray-500">${diferenciaCaro}€ más caro&lt;/span>&lt;/td>
+                    &lt;td class="px-2">
+                        ${estrellas(masCaro.rating)}
+                    &lt;/td>
+                &lt;/tr>
+            &lt;/tbody>
+        &lt;/table>
+        &lt;/div>`);
+        const barraMedia = $(`&lt;div class="relative overflow-x-auto shadow-md rounded-lg mb-8 p-8 w-full font-bold text-sm text-left text-[#bde0fe] dark:text-[#a2d2ff] bg-[#ffc8dd] dark:bg-[#672cb8]">
+            &lt;caption class="p-5 text-lg text-left rtl:text-right text-[#00b4d8] bg-[#ffd703] dark:text-white dark:bg-[#8338ec]">
+                Precio promedio: ${media}€
+            &lt;/caption>
+            &lt;div class="flex justify-between mb-1">
+                &lt;span class="text-base font-medium text-[#fb8500] dark:text-white">${masBarato.precio}&lt;/span>
+                &lt;span class="text-sm font-medium text-[#fb8500] dark:text-white">${masCaro.precio}&lt;/span>
+            &lt;/div>
+            &lt;div class="w-full bg-[#ffc8dd] rounded-full h-4 dark:bg-[#ffafcc]">
+                &lt;div class="bg-[#00b4d8] text-xs font-medium text-[#ffc8dd] text-center p-0.5 leading-none rounded-full" style="width: ${mediaPorcentaje}%"> ${media}€&lt;/div>
+            &lt;/div>
+        &lt;/div>`);
+    
+        analisisGeneral.append(barraMedia);
+        analisisGeneral.append(tablaComparativa);
+    }
+    else {
+        analisisGeneral.html(`&lt;p class="text-[#ffafcc] dark:text-[#ffd703]">No encontramos otros productos con ese nombre :(&lt;/p>`)
+    }
+
+
+    return analisisGeneral;
+}
+
+/**
+ * Crea una tarjeta de producto con imagen, nombre, precio y rating
+ * @param {string} img URL de la imagen del producto
+ * @param {string} name Nombre del producto
+ * @param {string} url URL a la página del producto
+ * @param {string} disponibility Estado de disponibilidad del producto
+ * @param {string} price Precio del producto en texto
+ * @param {float} rating Rating del producto como decimal de 1 al 5
+ * @returns {JQuery&lt;HTMLElement>} Un div generado con JQuery que contiene la tarjeta del producto
+ */
+export const productCard = (img, name, url, disponibility, price, rating) => {
+    const card = $(`&lt;div id="productCard" class="w-full max-w-lg lg:mb-0 md:mb-5 sm:mb-5 bg-[#ffc8dd] border border-gray-200 rounded-lg shadow-sm dark:bg-[#42167e] dark:border-[#00b4d8]">
+    &lt;a href="#">
+        &lt;img class="mx-auto mt-3 rounded-lg" src="${img}" alt="product image" style="height:350px"/>
+    &lt;/a>
+    &lt;div class="px-8 pb-5">
+        &lt;a href="${url}">
+            &lt;h5 id="productoNombre" class="text-xl font-semibold tracking-tight text-[#bde0fe] dark:text-[#ffccd9]">${name}&lt;/h5>
+        &lt;/a>
+        &lt;div class="flex justify-between items-center my-2.5">
+            ${estrellas(rating)}
+            &lt;span id="productDisponibility" class="bg-[#a70a44] text-[#8338ec] text-sm font-semibold px-2.5 py-0.5 rounded-full dark:bg-[#fb6f92] dark:text-[#382b09] ms-3">${disponibility}&lt;/span>
+        &lt;/div>
+        &lt;div class="flex items-center justify-between">
+            &lt;span id="productPrice" class="text-xl font-bold text-[#00b4d8] dark:text-[#a2d2ff]">${price}&lt;/span>
+            &lt;a id="new" href="index.html" class="text-white bg-[#fb8500] hover:bg-[#ffb703] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#ffb703] dark:hover:bg-[#fb8500] dark:focus:ring-[#8338ec]">Buscar otro&lt;/a>
+        &lt;/div>
+    &lt;/div>
+&lt;/div>`);
+    return card;
+}
+
+
+
+
+/**
+ * Crea un texto simulando las estrellas que representan el rating de un producto
+ * @param {float} rating Rating del producto en forma de número entero o decimal
+ * @returns {string} Un HTML de las estrellas para pintar directamente
+ */
+const estrellas = (rating) => {
+    const ratingEntero = parseInt(rating);
+
+    const estrellitas = `&lt;div class="flex items-center">
+                        &lt;svg class="w-4 h-4 ${ratingEntero >= 1 ? 'text-yellow-300' : 'text-gray-300 dark:text-gray-500'} ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                            &lt;path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                        &lt;/svg>
+                        &lt;svg class="w-4 h-4 ${ratingEntero >= 2 ? 'text-yellow-300' : 'text-gray-300 dark:text-gray-500'} ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                            &lt;path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                        &lt;/svg>
+                        &lt;svg class="w-4 h-4 ${ratingEntero >= 3 ? 'text-yellow-300' : 'text-gray-300 dark:text-gray-500'} ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                            &lt;path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                        &lt;/svg>
+                        &lt;svg class="w-4 h-4 ${ratingEntero >= 4 ? 'text-yellow-300' : 'text-gray-300 dark:text-gray-500'} ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                            &lt;path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                        &lt;/svg>
+                        &lt;svg class="w-4 h-4 ms-1 ${ratingEntero >= 5 ? 'text-yellow-300' : 'text-gray-300 dark:text-gray-500'}" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                            &lt;path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                        &lt;/svg>
+                        &lt;span id="productDisponibility" class="bg-blue-100 text-blue-800 text-sm font-semibold px-2.5 py-0.5 rounded-full dark:bg-blue-200 dark:text-blue-800 ms-3">${rating}&lt;/span>
+                    &lt;/div>`;
+    return estrellitas;
+}
+
+/**
+ * Realiza un análisis de precio entre el producto actual y otros productos similares y calcula el más barato, más caro, la diferencia con el precio del producto actual, y el precio medio
+ * @param {Object} producto Producto actual para realizar el análisis de precio
+ * @param {Array&lt;Object>} productos Lista de productos a comparar con el producto actual
+ * @returns {Object} Un objeto que contiene los datos mencionados
+ */
+const analisis = (producto, productos) => {
+    const precio = parseFloat(producto.precio.substring(0, producto.precio.indexOf('€')));
+    let masBarato = productos[0];
+    let masCaro = productos[0];
+    let diferenciaBarato = 0;
+    let diferenciaCaro = 0;
+
+    let media = 0;
+
+
+    productos.forEach(_producto => {
+        const precioActual = parseFloat(_producto.precio.substring(0, _producto.precio.indexOf('€')))
+        const precioBarato = parseFloat(masBarato.precio.substring(0, masBarato.precio.indexOf('€')))
+        const precioCaro = parseFloat(masCaro.precio.substring(0, masCaro.precio.indexOf('€')))
+        if (precioActual >= precioCaro) {
+            masCaro = _producto
+            diferenciaCaro = precioActual - precio;
+        }
+        if (precioActual &lt;= precioBarato) {
+            masBarato = _producto
+            diferenciaBarato = precio - precioActual;
+        }
+        media += precioActual;
+    });
+
+    media = media / productos.length;
+    const mediaPorcentaje = (media*100)/parseFloat(masCaro.precio.substring(0, masCaro.precio.indexOf('€')))
+    //
+    return {
+        masBarato: masBarato,
+        masCaro: masCaro,
+        diferenciaBarato: diferenciaBarato,
+        diferenciaCaro: diferenciaCaro,
+        media: media,
+        mediaPorcentaje: mediaPorcentaje
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#analisis">analisis</a></li><li><a href="global.html#buscador">buscador</a></li><li><a href="global.html#buscar">buscar</a></li><li><a href="global.html#estrellas">estrellas</a></li><li><a href="global.html#inicio">inicio</a></li><li><a href="global.html#initialSearch">initialSearch</a></li><li><a href="global.html#loading">loading</a></li><li><a href="global.html#menu">menu</a></li><li><a href="global.html#muestraAnalisis">muestraAnalisis</a></li><li><a href="global.html#navbar">navbar</a></li><li><a href="global.html#pintar">pintar</a></li><li><a href="global.html#productCard">productCard</a></li><li><a href="global.html#productDetails">productDetails</a></li><li><a href="global.html#productos">productos</a></li><li><a href="global.html#secondarySearch">secondarySearch</a></li><li><a href="global.html#showResults">showResults</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Feb 04 2025 01:15:04 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

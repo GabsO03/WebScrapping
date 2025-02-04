@@ -74,25 +74,28 @@ export const buscador = (urlAntigua = '') => {
  */
 export const navbar = (page) => {
     return $(`<header>
-        <nav class="bg-white border-gray-200 dark:bg-gray-900">
-            <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <nav class="border-gray-200 bg-[#291f84]">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
             <a href="/src/index.html" class="flex items-center space-x-3 rtl:space-x-reverse">
                 <img src="/logo.png" class="h-8" alt="Logo" />
-                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Compara</span>
+                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-[#ffafcc]">Compara</span>
             </a>
             <div class="lg:w-1/5 md:w-1/3 sm:w-1/3">
                 <ul class="font-medium flex p-4 md:p-0 mt-4 rounded-lg w-full justify-between rtl:space-x-reverse md:mt-0">
                     <li>
-                        <a href="/src/index.html" class="navbarBtn block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white ${page == 'index'? 'activeNavbar' : ''}">Inicio</a>
+                        <a href="/src/index.html" class="navbarBtn block py-2 px-3 text-[#2563eb] rounded-sm hover:bg-[#ffafcc] dark:text-[#fffbf0] dark:hover:bg-[#00b4d8] dark:hover:text-white ${page == 'index' ? 'activeNavbar' : ''}">Inicio</a>
                     </li>
                     <li>
-                        <a href="/src/historial.html" class="navbarBtn block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white ${page == 'historial'? 'activeNavbar' : ''}">Productos</a>
+                        <a href="/src/historial.html" class="navbarBtn block py-2 px-3 text-[#2563eb] rounded-sm hover:bg-[#ffafcc] dark:text-[#fffbf0] dark:hover:bg-[#00b4d8] dark:hover:text-white ${page == 'historial' ? 'activeNavbar' : ''}">Productos</a>
+                    </li>
+                    <li>
+                        <a href="/src/manual_usuario.html" class="navbarBtn block py-2 px-3 text-[#2563eb] rounded-sm hover:bg-[#ffafcc] dark:text-[#fffbf0] dark:hover:bg-[#00b4d8] dark:hover:text-white ${page == 'manual' ? 'activeNavbar' : ''}">Instrucciones</a>
                     </li>
                 </ul>
             </div>
-            </div>
-        </nav>
-    </header>`)
+        </div>
+    </nav>
+</header>`)
 }
 
 
@@ -103,16 +106,16 @@ export const navbar = (page) => {
 export const loading = $(`<!-- Cargando -->
             <div class="text-center flex justify-center" id="loading">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="200" height="200">
-                    <circle fill="#FFF" stroke="#FFF" stroke-width="2" r="7" cx="17" cy="50">
+                    <circle fill="#ffafcc" stroke="#ffafcc" stroke-width="2" r="7" cx="17" cy="50">
                         <animate attributeName="cx" calcMode="spline" dur="2s" values="17;83;83;17;17" keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1" repeatCount="indefinite" begin="0"></animate>
                     </circle>
-                    <circle fill="#FFF" stroke="#FFF" stroke-width="2" opacity=".8" r="7" cx="17" cy="50">
+                    <circle fill="#a2d2ff" stroke="#a2d2ff" stroke-width="2" opacity=".8" r="7" cx="17" cy="50">
                         <animate attributeName="cx" calcMode="spline" dur="2s" values="17;83;83;17;17" keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1" repeatCount="indefinite" begin="0.05"></animate>
                     </circle>
-                    <circle fill="#FFF" stroke="#FFF" stroke-width="2" opacity=".6" r="7" cx="17" cy="50">
+                    <circle fill="#fb6f92" stroke="#fb6f92" stroke-width="2" opacity=".6" r="7" cx="17" cy="50">
                         <animate attributeName="cx" calcMode="spline" dur="2s" values="17;83;83;17;17" keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1" repeatCount="indefinite" begin=".1"></animate>
                     </circle>
-                    <circle fill="#FFF" stroke="#FFF" stroke-width="2" opacity=".4" r="7" cx="17" cy="50">
+                    <circle fill="#00b4d8" stroke="#00b4d8" stroke-width="2" opacity=".4" r="7" cx="17" cy="50">
                         <animate attributeName="cx" calcMode="spline" dur="2s" values="17;83;83;17;17" keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1" repeatCount="indefinite" begin=".15"></animate>
                     </circle>
                     <circle fill="#FFF" stroke="#FFF" stroke-width="2" opacity=".2" r="7" cx="17" cy="50">

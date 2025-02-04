@@ -9,24 +9,25 @@ export const showResults = (productosArray) => {
     if (productosArray.length > 0) {
         let productos = ``;
         productosArray.forEach(producto => {
-            productos += `<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
+            productos += `<tr class="bg-[#ffc8dd] border-b dark:bg-[#8338ec] dark:border-00b4d8 border-gray-200 hover:bg-[#ffafcc] dark:hover:bg-[#fb6f92]">
                     <td class="p-4 flex justify-center">
-                        <img src="${producto.img}" class="w-16 md:w-32 max-w-full max-h-full" alt="Apple Watch">
+                        <img src="${producto.img}" class="w-16 md:w-32 max-w-full max-h-full" alt="${producto.img}">
                     </td>
-                    <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                    <td class="px-6 py-4 font-semibold text-bde0fe dark:text-[#a2d2ff]">
                         <a href="${producto.url}">${producto.nombre}</a>
                     </td>
-                    <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                    <td class="px-6 py-4 font-semibold text-00b4d8 dark:text-[#ffb703]">
                         ${producto.precio}
                     </td>
                 </tr>`;
         });
         results.html(`<table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <thead class="text-xs text-[#bde0fe] uppercase bg-[#ffc8dd] dark:bg-[#8338ec] dark:text-[#ffb703]">
             <tr class="text-center">
                 <th scope="col" class="px-16 py-3">
                     Imagen
                 </th>
+
                 <th scope="col" class="px-6 py-3">
                     Producto
                 </th>
@@ -43,7 +44,7 @@ export const showResults = (productosArray) => {
     </table>`)
     }
     else {
-        results.html(`<p class="text-gray-900 dark:text-white">No encontramos otros productos con ese nombre :(</p>`)
+        results.html(`<p class="text-[#00b4d8] dark:text-[#a2d2ff]">No encontramos otros productos con ese nombre :(</p>`)
     }
     
     
@@ -61,9 +62,9 @@ export const productDetails = (name, detailsArray) => {
 
     const details = $(`<div id="pDetails" class="seccion w-full overflow-x-hidden overflow-y-auto max-w-screen-sm hidden">
     <div class="relative w-full max-w-7xl">
-        <div class="relative bg-white h-130 lg:rounded-b-lg shadow-sm dark:bg-gray-700">
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
-                <h3 class="text-xl font-medium text-gray-900 dark:text-white">
+        <div class="relative bg-[#ffc8dd] h-130 lg:rounded-b-lg shadow-sm dark:bg-[#8338ec]">
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-[#00b4d8] border-[#ffd703]">
+                <h3 class="text-xl font-medium text-[#bde0fe] dark:text-[#a2d2ff]">
                     ${name}
                 </h3>
             </div>
@@ -86,19 +87,19 @@ export const productDetails = (name, detailsArray) => {
  */
 export const muestraAnalisis = (producto, productos) => {
 
-    const analisisGeneral = $(`<div id="pAnalisis" class="seccion bg-gray-200 dark:bg-gray-900 p-8 w-full h-130 overflow-x-hidden overflow-y-scroll max-w-screen-sm  lg:rounded-b-lg hidden"></div>`);
+    const analisisGeneral = $(`<div id="pAnalisis" class="seccion bg-[#ffc8dd] dark:bg-[#8338ec] p-8 w-full h-130 overflow-x-hidden overflow-y-scroll max-w-screen-sm  lg:rounded-b-lg hidden"></div>`);
 
 
     if (productos.length > 0) {
         const { masBarato, masCaro, diferenciaBarato, diferenciaCaro, media, mediaPorcentaje } = analisis(producto, productos);
 
         const tablaComparativa = $(`<div class="relative overflow-x-auto shadow-md rounded-lg">
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
+        <table class="w-full text-sm text-left text-[#bde0fe] dark:text-[#a2d2ff]">
+            <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-[#00b4d8] bg-[#ffc8dd] dark:text-white dark:bg-[#461c80]">
                 Tabla comparativa
-                <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Una comparación entre el producto más barato y el más caro que encontramos</p>
+                <p class="mt-1 text-sm font-normal text-[#00b4d8] dark:text-[#a2d2ff]">Una comparación entre el producto más barato y el más caro que encontramos</p>
             </caption>
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <thead class="text-xs text-[#00b4d8] uppercase bg-[#ffd703] dark:bg-[#00b4d8c6] dark:text-[#ffafcc]">
                 <tr class="text-center">
                     <th scope="col" class="px-6 py-3">Imagen</th>
                     <th scope="col" class="px-6 py-3">Producto</th>
@@ -108,45 +109,45 @@ export const muestraAnalisis = (producto, productos) => {
             </thead>
             <tbody>
                 <!-- Producto -->
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <tr class="bg-gray-100 border-b dark:bg-[#a2d2ff] dark:border-[#00b4d8] hover:bg-[#ffc8dd] dark:hover:bg-[#d53b74]">
                     <td class="p-4 flex justify-center">
                         <img src="${producto.img}" class="w-16 md:w-32 rounded-lg" alt="Producto Principal">
                     </td>
-                    <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                    <td class="px-6 py-4 font-semibold text-[#bde0fe] dark:text-[#00b4d8]">
                         <p><a href="${producto.url}">${producto.nombre.substring(0, producto.nombre.indexOf(','))}</a></p>
-                        <span class="text-sm text-gray-500 dark:text-gray-400">Producto actual</span>
+                        <span class="text-sm text-[#ffafcc] dark:text-[#ffd703]">Producto actual</span>
                     </td>
-                    <td class="px-6 py-4 font-bold text-gray-900 dark:text-white text-center">${producto.precio}</td>
+                    <td class="px-6 py-4 font-bold text-[#00b4d8] dark:text-[#ffafcc] text-center">${producto.precio}</td>
                     <td class="px-2">
                         ${estrellas(producto.rating)}
                     </td>
                 </tr>
     
                 <!-- Más barato -->
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <tr class="bg-gray-100 border-b dark:bg-[#a2d2ff] dark:border-[#00b4d8] hover:bg-[#ffc8dd] dark:hover:bg-[#d53b74]">
                     <td class="p-4">
                         <img src="${masBarato.img}" class="w-16 md:w-32 rounded-lg" alt="Opción Económica">
                     </td>
-                    <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                    <td class="px-6 py-4 font-semibold text-[#769fc3] dark:text-[#00b4d8]">
                         <p>${masBarato.nombre.substring(0, masBarato.nombre.indexOf(','))}</p>
-                        <span class="text-sm text-gray-500 dark:text-gray-400">Más económico</span>
+                        <span class="text-sm text-[#ffafcc] dark:text-[#ffd703]">Más económico</span>
                     </td>
-                    <td class="px-6 py-4 font-bold text-center text-green-600 dark:text-green-400 flex justify-center items-center flex-col">${masBarato.precio}🔽<span class="text-xs text-gray-500 dark:text-gray-400">${diferenciaBarato}€ más barato</span></td>
+                    <td class="px-6 py-4 font-bold text-center text-[#00b4d8] dark:text-[#4f88bd] flex justify-center items-center flex-col">${masBarato.precio}🔽<span class="text-xs text-gray-500 dark:text-gray-500">${diferenciaBarato}€ más barato</span></td>
                     <td class="px-2">
                         ${estrellas(masBarato.rating)}
                     </td>
                 </tr>
     
                 <!-- Más caro -->
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <tr class="bg-gray-100 border-b dark:bg-[#a2d2ff] dark:border-[#00b4d8] hover:bg-[#ffc8dd] dark:hover:bg-[#d53b74]">
                     <td class="p-4">
                         <img src="${masCaro.img}" class="w-16 md:w-32 rounded-lg" alt="Opción Premium">
                     </td>
-                    <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                    <td class="px-6 py-4 font-semibold text-[#bde0fe] dark:text-[#00b4d8]">
                         <p>${masCaro.nombre.substring(0, masCaro.nombre.indexOf(','))}</p>
-                        <span class="text-sm text-gray-500 dark:text-gray-400">Más costoso</span>
+                        <span class="text-sm text-[#ffafcc] dark:text-[#ffd703]">Más costoso</span>
                     </td>
-                    <td class="px-6 py-4 font-bold text-center text-red-600 dark:text-red-400 flex justify-center items-center flex-col">${masCaro.precio}🔼<span class="text-xs text-gray-500 dark:text-gray-400">${diferenciaCaro}€ más caro</span></td>
+                    <td class="px-6 py-4 font-bold text-center text-[#ff6f92] dark:text-[#ff8500] flex justify-center items-center flex-col">${masCaro.precio}🔼<span class="text-xs text-gray-500 dark:text-gray-500">${diferenciaCaro}€ más caro</span></td>
                     <td class="px-2">
                         ${estrellas(masCaro.rating)}
                     </td>
@@ -154,16 +155,16 @@ export const muestraAnalisis = (producto, productos) => {
             </tbody>
         </table>
         </div>`);
-        const barraMedia = $(`<div class="relative overflow-x-auto shadow-md rounded-lg mb-8 p-8 w-full font-bold text-sm text-left text-gray-500 dark:text-gray-400 bg-gray-400 dark:bg-gray-800">
-            <caption class="p-5 text-lg text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
-                Precio promedio
+        const barraMedia = $(`<div class="relative overflow-x-auto shadow-md rounded-lg mb-8 p-8 w-full font-bold text-sm text-left text-[#bde0fe] dark:text-[#a2d2ff] bg-[#ffc8dd] dark:bg-[#672cb8]">
+            <caption class="p-5 text-lg text-left rtl:text-right text-[#00b4d8] bg-[#ffd703] dark:text-white dark:bg-[#8338ec]">
+                Precio promedio: ${media}€
             </caption>
             <div class="flex justify-between mb-1">
-                <span class="text-base font-medium text-blue-700 dark:text-white">${masBarato.precio}</span>
-                <span class="text-sm font-medium text-blue-700 dark:text-white">${masCaro.precio}</span>
+                <span class="text-base font-medium text-[#fb8500] dark:text-white">${masBarato.precio}</span>
+                <span class="text-sm font-medium text-[#fb8500] dark:text-white">${masCaro.precio}</span>
             </div>
-            <div class="w-full bg-gray-200 rounded-full h-4 dark:bg-gray-700">
-                <div class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style="width: ${mediaPorcentaje}%"> ${media}€</div>
+            <div class="w-full bg-[#ffc8dd] rounded-full h-4 dark:bg-[#ffafcc]">
+                <div class="bg-[#00b4d8] text-xs font-medium text-[#ffc8dd] text-center p-0.5 leading-none rounded-full" style="width: ${mediaPorcentaje}%"> ${media}€</div>
             </div>
         </div>`);
     
@@ -171,7 +172,7 @@ export const muestraAnalisis = (producto, productos) => {
         analisisGeneral.append(tablaComparativa);
     }
     else {
-        analisisGeneral.html(`<p class="text-gray-900 dark:text-white">No encontramos otros productos con ese nombre :(</p>`)
+        analisisGeneral.html(`<p class="text-[#ffafcc] dark:text-[#ffd703]">No encontramos otros productos con ese nombre :(</p>`)
     }
 
 
@@ -189,26 +190,24 @@ export const muestraAnalisis = (producto, productos) => {
  * @returns {JQuery<HTMLElement>} Un div generado con JQuery que contiene la tarjeta del producto
  */
 export const productCard = (img, name, url, disponibility, price, rating) => {
-    const card = $(`<div id="productCard" class="w-full max-w-lg lg:mb-0 md:mb-5 sm:mb-5 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-            <a href="#">
-                <img class="mx-auto mt-3 rounded-lg" src="
-                ${img}
-                " alt="product image" style="height:350px"/>
-            </a>
-            <div class="px-8 pb-5">
-                <a href="${url}">
-                    <h5 id="productoNombre" class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">${name}</h5>
-                </a>
-                <div class="flex justify-between items-center my-2.5">
-                    ${estrellas(rating)}
-                    <span id="productDisponibility" class="bg-blue-100 text-blue-800 text-sm font-semibold px-2.5 py-0.5 rounded-full dark:bg-blue-200 dark:text-blue-800 ms-3">${disponibility}</span>
-                </div>
-                <div class="flex items-center justify-between">
-                    <span id="productPrice" class="text-xl font-bold text-gray-900 dark:text-white">${price}</span>
-                    <a id="new" href="index.html" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Buscar otro</a>
-                </div>
-            </div>
-        </div>`);
+    const card = $(`<div id="productCard" class="w-full max-w-lg lg:mb-0 md:mb-5 sm:mb-5 bg-[#ffc8dd] border border-gray-200 rounded-lg shadow-sm dark:bg-[#42167e] dark:border-[#00b4d8]">
+    <a href="#">
+        <img class="mx-auto mt-3 rounded-lg" src="${img}" alt="product image" style="height:350px"/>
+    </a>
+    <div class="px-8 pb-5">
+        <a href="${url}">
+            <h5 id="productoNombre" class="text-xl font-semibold tracking-tight text-[#bde0fe] dark:text-[#ffccd9]">${name}</h5>
+        </a>
+        <div class="flex justify-between items-center my-2.5">
+            ${estrellas(rating)}
+            <span id="productDisponibility" class="bg-[#a70a44] text-[#8338ec] text-sm font-semibold px-2.5 py-0.5 rounded-full dark:bg-[#fb6f92] dark:text-[#382b09] ms-3">${disponibility}</span>
+        </div>
+        <div class="flex items-center justify-between">
+            <span id="productPrice" class="text-xl font-bold text-[#00b4d8] dark:text-[#a2d2ff]">${price}</span>
+            <a id="new" href="index.html" class="text-white bg-[#fb8500] hover:bg-[#ffb703] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#ffb703] dark:hover:bg-[#fb8500] dark:focus:ring-[#8338ec]">Buscar otro</a>
+        </div>
+    </div>
+</div>`);
     return card;
 }
 

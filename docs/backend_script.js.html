@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: backend/script.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: backend/script.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview Servidor Express con Puppeteer para web scraping
+ */
+
+const puppeteer = require('puppeteer');
+const { v4: uuid } = require('uuid');
+
+const express = require('express');
+const app = express();
+const cors = require('cors');
+const PORT = process.env.PORT || 3000;
+
+app.use(cors()); //Esto es para que no nos afecte el cors
+app.use(express.json());
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
+})
+app.get('/', (req, res) => {
+    res.send(`&lt;h2>Hola desde ${req.baseUrl}&lt;/h2>`);
+});
+
+//Api para la primera busqueda (producto principal)
+app.get('/api/:url', async (request, response) => {
+    const url = decodeURIComponent(request.params.url);
+    const data = await initialSearch(url);
+    response.json(data)
+})
+
+//Api para la segunda busqueda (productos a comparar)
+app.get('/api/compare/:nombre', async (request, response) => {
+    const nombre = request.params.nombre;
+    const data = await secondarySearch(nombre);
+    response.json(data)
+})
+
+
+// Primera busqueda
+/**
+ * Funcion para la primera busqueda del producto
+ * @param {string} url_producto 
+ * @returns {Promise&lt;Object>} Un objeto con datos del producto
+ */
+async function initialSearch(url_producto) {
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+
+    await page.goto(url_producto, { waitUntil: 'domcontentloaded', timeout: 100000 });
+
+    const nombre = await page.$eval('#productTitle', span => span.textContent.trim());
+    const precioEntero = await page.$eval('.a-price-whole', span => span.textContent.trim());
+    const precioFraction = await page.$eval('.a-price-fraction', span => span.textContent.trim());
+    const precio = precioEntero + precioFraction + '€'
+    let img = await page.$eval('#main-image-container img', img => img.src);
+    if (!img.endsWith('.jpg')) {
+        img =  await page.$eval('#landingImage', img => img.src);
+    }
+    let detalles = await page.$$eval('#productFactsDesktopExpander ul li', lis => {
+        return lis.map(li => li.textContent.trim().replaceAll('\n', '').replaceAll('                                                 ', ':'));
+    });
+    if (detalles.length === 0) {
+        detalles = await page.$$eval('#feature-bullets ul li', lis => {
+        return lis.map(li => li.textContent.trim().replaceAll('\n', '').replaceAll('                                                 ', ':'));
+        });
+    }
+    const disponibilidad = await page.$eval('#availability span', span => span.textContent.trim())
+
+    const rating = await page.$eval('#acrPopover span.a-size-base', span => span? span.textContent.trim() : false)
+    
+    const producto = {
+        id: uuid(),
+        nombre: nombre,
+        precio: precio,
+        img: img,
+        detalles: detalles,
+        disponibilidad: disponibilidad != ''? disponibilidad : 'Sin stock',
+        rating: rating? parseFloat(rating) : null,
+        url_producto: url_producto
+    }
+    
+    console.log(producto);
+
+    await browser.close();
+    return producto;
+}
+
+
+// Segunda busqueda
+/**
+ * Realiza una búsqueda secundaria en AliExpress.
+ * @param {string} nombre_producto Nombre del producto
+ * @returns {Promise&lt;Object[]>} Lista de productos para comparar
+ */
+async function secondarySearch(nombre_producto) {
+    const browser = await puppeteer.launch();
+    let nombreLimpio = nombre_producto.substring(0, nombre_producto.indexOf(','));
+
+    let productos = [];
+
+    //Buscando en aliexpress
+    try {
+        const page = await browser.newPage();
+
+        nombreLimpio = nombreLimpio.replaceAll(' ', '-');
+        await page.goto(`https://es.aliexpress.com/w/wholesale-${nombreLimpio}.html?spm=a2g0o.productlist.search.0`, { waitUntil: 'domcontentloaded', timeout: 100000 })
+
+        console.log(`https://es.aliexpress.com/w/wholesale-${nombreLimpio}.html?spm=a2g0o.productlist.search.0`);
+
+        const aliexpress = await page.$$eval('#card-list .search-item-card-wrapper-gallery', items => {
+            return items.map(item => {
+                const nombre = item.querySelector('.multi--title--nXeOvyr') ? item.querySelector('.multi--title--nXeOvyr').textContent.trim() : item.querySelector('.multi--title--G7dOCj3').textContent.trim();
+                const precio = item.querySelector('.multi--price-sale--U-S0jtj') ? item.querySelector('.multi--price-sale--U-S0jtj').textContent.trim() : null;
+                const img = item.querySelector('.images--item--3XZa6xf') ? item.querySelector('.images--item--3XZa6xf').src : null;
+                const ratingDiv = item.querySelector('.multi--starList--t9_CAj2')? item.querySelector('.multi--starList--t9_CAj2') : null;
+                const estrellasRellenos = ratingDiv? ratingDiv.querySelectorAll('.multi--progress--2E4WzbQ') : [];
+                const ratingReal = (estrellas) => {
+                    let rating = 0;
+                    estrellas.forEach(estrella => {
+                        rating += parseFloat(estrella.style.width);
+                    });
+                
+                    return rating / 10; 
+                }
+                const aHref = item.querySelector('.search-card-item');
+                const url = aHref ? `https:${aHref.getAttribute('href').trim()}` : '';
+                
+                return {
+                    nombre: nombre,
+                    precio: precio,
+                    img: img,
+                    rating: ratingReal(estrellasRellenos),
+                    url: url
+                }
+            }).slice(0, 5)
+        });
+
+        productos = productos.concat(aliexpress);
+    } catch (error) {
+        console.error('No se encontraron resultados en aliexpress')
+    } finally {
+        await browser.close();
+    }
+
+    console.dir(productos);
+
+    return productos;
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#analisis">analisis</a></li><li><a href="global.html#buscador">buscador</a></li><li><a href="global.html#buscar">buscar</a></li><li><a href="global.html#estrellas">estrellas</a></li><li><a href="global.html#inicio">inicio</a></li><li><a href="global.html#initialSearch">initialSearch</a></li><li><a href="global.html#loading">loading</a></li><li><a href="global.html#menu">menu</a></li><li><a href="global.html#muestraAnalisis">muestraAnalisis</a></li><li><a href="global.html#navbar">navbar</a></li><li><a href="global.html#pintar">pintar</a></li><li><a href="global.html#productCard">productCard</a></li><li><a href="global.html#productDetails">productDetails</a></li><li><a href="global.html#productos">productos</a></li><li><a href="global.html#secondarySearch">secondarySearch</a></li><li><a href="global.html#showResults">showResults</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Feb 04 2025 01:15:04 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

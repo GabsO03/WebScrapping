@@ -2,14 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+
 .active {
-    color: #2563eb;
-    border-color: #2563eb;
-    border-bottom-width: 2px;
+    color: #ffafcc;  /* Soft pink */
+    border-color: #ffafcc;
 }
 
 .active svg {
-    color: #2563eb;
+    color: #ffafcc;
 }
 
 .current {
@@ -17,7 +17,36 @@
 }
 
 .activeNavbar {
-    background-color: #1d4ed8;
+    background-color: #8338ec;  /* Soft purple */
     padding: 3px;
     border-radius: 5px;
+}
+
+body {
+    background-color: #1e1e2f; /* Dark background for night mode */
+    color: #fffbf0; /* Light cream text */
+}
+
+h1, h2, h3, h4 {
+    color: #ffafcc; /* Soft pink */
+}
+
+button {
+    background-color: #faad55; /* Orange */
+    border-radius: 8px;
+    padding: 10px 20px;
+    color: white;
+}
+
+button:hover {
+    background-color: #f4a53f; /* Light orange */
+}
+
+.navbarBtn {
+    color: #bde0fe;  /* Light blue */
+    padding: 10px;
+}
+
+.navbarBtn:hover {
+    background-color: #00b4d8;  /* Bright blue */
 }
